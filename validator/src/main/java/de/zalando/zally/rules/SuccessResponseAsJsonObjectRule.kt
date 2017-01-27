@@ -7,7 +7,7 @@ import io.swagger.models.ModelImpl
 import io.swagger.models.Swagger
 import io.swagger.models.properties.Property
 import io.swagger.models.properties.RefProperty
-import java.util.*
+import java.util.ArrayList
 
 open class SuccessResponseAsJsonObjectRule : Rule {
     private val TITLE = "Response As JSON Object"
