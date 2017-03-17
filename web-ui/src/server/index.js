@@ -1,3 +1,5 @@
+'use strict';
+
 const env = require('./env');
 const express = require('express');
 const path = require('path');
@@ -9,11 +11,11 @@ const ASSETS_DIR = path.resolve(__dirname, '../client/public/assets');
 /**
  * Use webpack middleware just in development
  */
-if(process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpack = require('webpack');
   const webpackConfig = require('../../webpack.config');
-  var compiler = webpack(webpackConfig);
+  const compiler = webpack(webpackConfig);
 
   app.use(webpackDevMiddleware(compiler, {
     publicPath: '/assets/',
@@ -65,7 +67,7 @@ app.use('/zally-api', require('./zally-api-handler'));
 app.get('/health', (req, res) => {
   res.json({
     alive: true
-  })
+  });
 });
 
 /**
