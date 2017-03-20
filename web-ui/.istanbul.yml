@@ -1,0 +1,20 @@
+instrumentation:
+  root: .
+  extensions:
+    - .js
+  default-excludes: true
+  include-all-sources: true
+  excludes:
+    - webpack.config.js
+    - gulpfile.js
+    - src/client/**/*
+    - target/**/*
+    - tools/**/*
+    - scripts/**/*
+reporting:
+  reports:
+    - lcov
+    - cobertura
+  dir: ./target/unit/coverage
+  report-config:
+    cobertura: {file: cobertura.xml}
