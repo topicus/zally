@@ -1,28 +1,12 @@
-import {Request} from 'oauth2-client-js';
-import querystring from 'query-string';
-import OAuthProvider from './oauth-provider.js';
 import {client} from './http-client.js';
 import fetch from './fetch.js';
 import {debug} from './debug.js';
 import get from 'lodash/get';
 
-export function requestToken () {
-  const request = new Request({
-    client_id: window.env.OAUTH_CLIENT_ID,
-    redirect_uri:  window.env.OAUTH_REDIRECT_URI,
-    scopes:  window.env.OAUTH_SCOPES
-  });
-  OAuthProvider.remember(request);
-  window.location.href = OAuthProvider.requestToken(request);
-}
-
 export function refreshToken () {
-  const query = {
-    refresh_token: OAuthProvider.getRefreshToken(),
-    client_id: window.env.OAUTH_CLIENT_ID
-  };
-  return fetch(`/refresh-token?${querystring.stringify(query)}`, {
+  return fetch('/auth/refresh-token', {
     method: 'POST',
+    credentials: 'same-origin',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -33,9 +17,7 @@ export function refreshToken () {
     });
   })
   .then(({response, body}) => {
-    OAuthProvider.setAccessToken(body.access_token);
-    OAuthProvider.setRefreshToken(body.refresh_token);
-    debug('token refreshed, new token', body);
+    debug('token refreshed', body);
     return { response, body };
   })
   .catch((error) => {
@@ -44,9 +26,10 @@ export function refreshToken () {
   });
 }
 
-export function checkTokenIsValid () {
-  return client.fetch('/tokeninfo', {
+export function me () {
+  return client.fetch('/auth/me', {
     method: 'POST',
+    credentials: 'same-origin',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -57,6 +40,7 @@ export function checkTokenIsValid () {
   })
   .catch((error) => {
     console.error(error); // eslint-disable-line no-console
+    error.message = error.message || 'invalid access token';
     return Promise.reject(error);
   });
 }
@@ -66,19 +50,19 @@ export function getUsername (tokenInfoBody){
   return get(tokenInfoBody, usernamePath, 'anonymous');
 }
 
-export function createUser (tokenInfoBody) {
+export function createUser (data, authenticated = false) {
   return {
-    username: getUsername(tokenInfoBody)
+    username: getUsername(data),
+    authenticated
   };
 }
 
-export function logout (){
-  OAuthProvider.deleteTokens();
-  window.location.reload();
+export function logout () {
+  window.location.href = '/auth/logout';
 }
 
 export function login () {
-  requestToken();
+  window.location.href = '/auth/login';
 }
 
 /**

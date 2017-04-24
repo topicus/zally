@@ -11,13 +11,16 @@ const defaults = {
   SSL_ENABLED: false,
   SSL_CERT: '',
   SSL_KEY: '',
+  SESSION_SECRET: 'this-should-be-secret',
+  PUBLIC_URL: 'http://localhost:8442',
   ZALLY_API_URL: '',
   OAUTH_ENABLED: false,
   OAUTH_AUTHORIZATION_URL: '',
-  OAUTH_REDIRECT_URI: '',
+  OAUTH_ACCESS_TOKEN_URL: '',
   OAUTH_TOKENINFO_URL:'',
   OAUTH_REFRESH_TOKEN_URL: '',
   OAUTH_CLIENT_ID:'',
+  OAUTH_CLIENT_SECRET: '',
   OAUTH_SCOPES:'',
   OAUTH_USERNAME_PROPERTY: 'cn',
   DEV_PORT: 8441,
@@ -25,6 +28,11 @@ const defaults = {
   DEBUG: false
 };
 
+const env = stringToBool(Object.assign(
+  defaults,
+  process.env,
+  dotenvParsedVariables
+));
 
 /**
  * Those keys will be exposed to the client
@@ -32,20 +40,9 @@ const defaults = {
  */
 const publicEnvKeys = [
   'OAUTH_ENABLED',
-  'OAUTH_CLIENT_ID',
-  'OAUTH_AUTHORIZATION_URL',
-  'OAUTH_REDIRECT_URI',
-  'OAUTH_TOKENINFO_URL',
-  'OAUTH_SCOPES',
   'OAUTH_USERNAME_PROPERTY',
   'DEBUG'
 ];
-
-const env = stringToBool(Object.assign(
-  defaults,
-  process.env,
-  dotenvParsedVariables
-));
 
 const publicEnv = publicEnvKeys.reduce((acc, key) => {
   acc[key] = env[key];

@@ -35,6 +35,8 @@
   "dependencies": {
     "aurelia-fetch-client": "1.1.2",
     "body-parser": "1.17.1",
+    "cookie-parser": "1.4.3",
+    "cookie-session": "2.0.0-beta.1",
     "dotenv": "4.0.0",
     "dotenv-parse-variables": "0.0.1",
     "dress-code": "2.0.0",
@@ -42,7 +44,8 @@
     "js-yaml": "3.8.2",
     "lodash": "4.17.4",
     "node-fetch": "1.6.3",
-    "oauth2-client-js": "0.0.15",
+    "passport": "0.3.2",
+    "passport-oauth2": "1.4.0",
     "query-string": "4.3.2",
     "react": "15.4.2",
     "react-ace": "4.2.0",

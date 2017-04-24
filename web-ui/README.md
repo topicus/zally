@@ -36,15 +36,19 @@ LOG_LEVEL="debug"
 SSL_ENABLED=false
 SSL_KEY=""
 SSL_CERT=""
+SESSION_SECRET="this-must-be-secret"
 
+PUBLIC_URL="http://localhost:8442"
 ZALLY_API_URL=""
 
 OAUTH_ENABLED=false
 OAUTH_CLIENT_ID=""
+OAUTH_CLIENT_SECRET=""
 OAUTH_AUTHORIZATION_URL=""
 OAUTH_REDIRECT_URI=""
 OAUTH_TOKENINFO_URL=""
 OAUTH_REFRESH_TOKEN_URL=""
+OAUTH_ACCESS_TOKEN_URL=""
 OAUTH_SCOPES=""
 OAUTH_USERNAME_PROPERTY="cn"
 
@@ -60,16 +64,19 @@ DEBUG=false
 * **SSL_ENABLED**: Start the server with HTTPS 
 * **SSL_KEY**: Fs path to SSL key file 
 * **SSL_CERT**: Fs path to SSL cert file 
+* **SESSION_SECRET**: Secret used to encrypt the session cookie
 
+* **PUBLIC_URL**: The public URL to reach the web-ui (take in mind that if OAuth is enabled `<PUBLIC_URL>/auth/callback` will be used as the route handling the OAuth authorize response, also known as `redirect_uri`)
 * **ZALLY_API_URL**: The URL pointing to Zally Api Server
 
-* **OAUTH_ENABLED**: Enable client side OAuth2 implicit grant flow protection
-* **OAUTH_CLIENT_ID**: OAuth2 client id assigned to your app
-* **OAUTH_REDIRECT_URI**: The route that should handle the OAuth2 access token response
-* **OAUTH_TOKENINFO_URL**: The url used to validate the access token and retrieve token information
+* **OAUTH_ENABLED**: Enable OAuth
+* **OAUTH_CLIENT_ID**: OAuth client id assigned to your app
+* **OAUTH_CLIENT_SECRET**: OAuth client secret assigned to your app
+* **OAUTH_TOKENINFO_URL**: The url used to validate the access token and retrieve token informations
 * **OAUTH_REFRESH_TOKEN_URL**: The url used to refresh the access token
+* **OAUTH_ACCESS_TOKEN_URL**: The url used to get an access token and refresh token from an authorization code
 * **OAUTH_SCOPES**: Comma separated list of scopes that the user should grant to the app
-* **OAUTH_USERNAME_PROPERTY**: Property that can be found in the /tokeninfo response representing the username of the connected user (eg. uid or user.uid if nested)
+* **OAUTH_USERNAME_PROPERTY**: Property that can be found in the /tokeninfo response representing the username of the connected user (eg. `uid` or `user.uid` if nested)
 
 * **DEV_PORT**: HTTP(S) server port for the dev server (webpack-dev-server)
 * **DEV_SSL_ENABLED**: start dev server with https
