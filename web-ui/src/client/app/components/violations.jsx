@@ -9,7 +9,11 @@ export function Violations (props) {
       {props.violations.length ? <h3>VIOLATIONS</h3> : ''}
       <ul style={{padding: 0, listStyle: 'none'}}>{
         props.violations.map((violation, index) => {
-          return (<Violation key={index} violation={violation} />);
+          return (
+            <Violation 
+              key={index} 
+              violation={violation}
+              scrollToPathError={props.scrollToPathError} />);
         })
       }</ul>
     </div>
@@ -31,7 +35,7 @@ export function Violation (props) {
       </If>
 
       <If test={() => !!props.violation.paths.length } dataTestId="if-violation-paths">
-        <ViolationPaths paths={props.violation.paths} />
+        <ViolationPaths paths={props.violation.paths} scrollToPathError={props.scrollToPathError} />
       </If>
     </li>
   );
@@ -49,7 +53,9 @@ export function ViolationPaths (props) {
   return (
     <span>
       <p>Paths:</p>
-      <ul>{ props.paths.map((path, i) => { return <li key={i}>{path}</li>; }) }</ul>
+      <ul>{ props.paths.map((path, i) => { 
+        return <a key={i} href="#" onClick={e => props.scrollToPathError(e, path)}><li>{path}</li></a>; }) }
+      </ul>
     </span>
   );
 }
@@ -67,7 +73,10 @@ export function ViolationsResult (props){
         <Msg type="error" title="ERROR" text={props.errorMsgText} closeButton={false} />
       </If>
       <If test={() => !props.pending && props.complete && props.violations.length} dataTestId="if-violations">
-        <Violations violations={props.violations} violationsCount={props.violationsCount}/>
+        <Violations 
+          violations={props.violations} 
+          violationsCount={props.violationsCount}
+          scrollToPathError={props.scrollToPathError} />
       </If>
     </div>
   );

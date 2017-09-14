@@ -51,6 +51,16 @@ export class Editor extends Violations {
     this.updateInputValue(value);
   }
 
+  handleScrollToPathError(e, path) {
+    e.preventDefault();
+    window.scroll(0,0);
+    const editor = this.editor.editor;
+    editor.resize(true);
+    editor.scrollToLine(25, true, true, function () {});
+    editor.gotoLine(25, 10, true);
+    editor.focus();
+  }
+
   render () {
     return (
       <div className="dc-row">
@@ -61,6 +71,7 @@ export class Editor extends Violations {
               editorAnnotations={this.state.editorAnnotations}
               editorValue={this.state.editorValue}
               onSubmit={this.handleFormSubmit.bind(this)}
+              editorRef={editor => this.editor = editor}
               onInputValueChange={this.handleOnInputValueChange.bind(this)}
               pending={this.state.pending} />
           </div>
@@ -74,7 +85,8 @@ export class Editor extends Violations {
               errorMsgText={this.state.error}
               violations={this.state.violations}
               successMsgTitle={this.state.successMsgTitle}
-              successMsgText={this.state.successMsgText} />
+              successMsgText={this.state.successMsgText} 
+              scrollToPathError={this.handleScrollToPathError.bind(this)} />
           </div>
         </div>
       </div>

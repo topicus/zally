@@ -25,7 +25,8 @@ export function EditorInputForm (props) {
     <Editor
       annotations={props.editorAnnotations}
       onChange={props.onInputValueChange}
-      value={props.editorValue} />
+      value={props.editorValue} 
+      editorRef={props.editorRef} />
     <div className="editor-input-form__bottom-button">
       <ValidateButton disabled={validateButtonIsDisabled} />
     </div>
@@ -44,6 +45,7 @@ export function Editor (props) {
         annotations={props.annotations}
         showPrintMargin={false}
         value={props.value}
+        ref={props.editorRef}
         onChange={props.onChange || function () {}}
         editorProps={{$blockScrolling: true}}
       />
