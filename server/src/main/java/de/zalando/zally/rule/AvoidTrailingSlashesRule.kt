@@ -15,7 +15,7 @@ class AvoidTrailingSlashesRule : SwaggerRule() {
     private val DESCRIPTION = "Rule avoid trailing slashes is not followed"
 
     override fun validate(swagger: Swagger): Violation? {
-        val paths = swagger.paths.orEmpty().keys.filter { it != null && PatternUtil.hasTrailingSlash(it) }
+        val paths = swagger.paths.orEmpty().keys.filter { it != null && PatternUtil.hasTrailingSlash(it) }.map { Path(it, message = it) }
         return if (!paths.isEmpty()) Violation(this, title, DESCRIPTION, violationType, url, paths) else null
     }
 }

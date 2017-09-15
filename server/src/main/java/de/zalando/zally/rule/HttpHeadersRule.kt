@@ -9,7 +9,7 @@ abstract class HttpHeadersRule(rulesConfig: Config) : SwaggerRule() {
 
     private val headersWhitelist = rulesConfig.getStringList(HttpHeadersRule::class.simpleName + ".whitelist").toSet()
 
-    abstract fun createViolation(paths: List<String>): Violation
+    abstract fun createViolation(paths: List<Path>): Violation
 
     abstract fun isViolation(header: String): Boolean
 
@@ -29,7 +29,7 @@ abstract class HttpHeadersRule(rulesConfig: Config) : SwaggerRule() {
         val allHeaders = fromParams + fromPaths
         val paths = allHeaders
             .filter { it.second !in headersWhitelist && isViolation(it.second) }
-            .map { "${it.first} ${it.second}" }
+            .map { Path(it.first,it.second, "${it.first} ${it.second}") }
             .toSet()
             .toList()
         return if (paths.isNotEmpty()) createViolation(paths) else null

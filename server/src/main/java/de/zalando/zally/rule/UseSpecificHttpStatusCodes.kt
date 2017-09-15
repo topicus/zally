@@ -17,7 +17,7 @@ class UseSpecificHttpStatusCodes(@Autowired rulesConfig: Config) : SwaggerRule()
     override val violationType = ViolationType.SHOULD
     override val code = "M016"
     override val guidelinesCode = "150"
-    private val description = "Operatons should use specific HTTP status codes"
+    private val description = "Operations should use specific HTTP status codes"
 
     private val allowedStatusCodes = rulesConfig
             .getConfig("$name.allowed_codes").entrySet()

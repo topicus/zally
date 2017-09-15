@@ -31,7 +31,7 @@ class DefineOAuthScopesRule : SwaggerRule() {
                         "no valid OAuth2 scope"
                     else -> null
                 }
-                if (msg != null) "$pathKey $method has $msg" else null
+                if (msg != null) Path(pathKey, method.toString(), "$pathKey $method has $msg") else null
             }.filterNotNull()
         }
         return if (!paths.isEmpty()) {
@@ -41,23 +41,23 @@ class DefineOAuthScopesRule : SwaggerRule() {
 
     // get the scopes from security definition
     private fun getDefinedScopes(swagger: Swagger): Set<Pair<String, String>> =
-        swagger.securityDefinitions.orEmpty().entries.flatMap { (group, def) ->
-            (def as? OAuth2Definition)?.scopes.orEmpty().keys.map { scope -> group to scope }
-        }.toSet()
+            swagger.securityDefinitions.orEmpty().entries.flatMap { (group, def) ->
+                (def as? OAuth2Definition)?.scopes.orEmpty().keys.map { scope -> group to scope }
+            }.toSet()
 
     // Extract all oauth2 scopes applied to the given operation into a simple list
     private fun extractAppliedScopes(operation: Operation): Set<Pair<String, String>> =
-        operation.security?.flatMap { groupDefinition ->
-            groupDefinition.entries.flatMap { (group, scopes) ->
-                scopes.map { group to it }
-            }
-        }.orEmpty().toSet()
+            operation.security?.flatMap { groupDefinition ->
+                groupDefinition.entries.flatMap { (group, scopes) ->
+                    scopes.map { group to it }
+                }
+            }.orEmpty().toSet()
 
     private fun hasTopLevelScope(swagger: Swagger, definedScopes: Set<Pair<String, String>>): Boolean =
-        swagger.security?.any { securityRequirement ->
-            securityRequirement.requirements.entries.any { (group, scopes) ->
-                scopes.any { scope -> (group to scope) in definedScopes }
-            }
-        } ?: false
+            swagger.security?.any { securityRequirement ->
+                securityRequirement.requirements.entries.any { (group, scopes) ->
+                    scopes.any { scope -> (group to scope) in definedScopes }
+                }
+            } ?: false
 
 }

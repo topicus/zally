@@ -1,13 +1,10 @@
 package de.zalando.zally.apireview;
 
-import de.zalando.zally.dto.ApiDefinitionRequest;
-import de.zalando.zally.dto.ApiDefinitionResponse;
-import de.zalando.zally.dto.ViolationDTO;
-import de.zalando.zally.dto.ViolationType;
-import de.zalando.zally.dto.ViolationsCounter;
+import de.zalando.zally.dto.*;
 import de.zalando.zally.exception.MissingApiDefinitionException;
 import de.zalando.zally.exception.UnaccessibleResourceUrlException;
 import de.zalando.zally.rule.ApiValidator;
+import de.zalando.zally.rule.Path;
 import de.zalando.zally.rule.Violation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.dropwizard.DropwizardMetricServices;
@@ -82,12 +79,16 @@ public class ApiViolationsController {
 
     private ViolationDTO toDto(Violation violation) {
         return new ViolationDTO(
-            violation.getTitle(),
-            violation.getDescription(),
-            violation.getViolationType(),
-            violation.getRuleLink(),
-            violation.getPaths()
+                violation.getTitle(),
+                violation.getDescription(),
+                violation.getViolationType(),
+                violation.getRuleLink(),
+                violation.getPaths().stream().map(this::toPathDto).collect(toList())
         );
+    }
+
+    private PathDTO toPathDto(Path path) {
+        return new PathDTO(path.getPath(), path.getMethod(), path.getMessage());
     }
 
     private Map<String, Integer> buildViolationsCount(List<Violation> violations) {
